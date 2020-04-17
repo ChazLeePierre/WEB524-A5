@@ -1,0 +1,54 @@
+﻿@model Assignment5.ViewModels.TrackWithDetailViewModel
+
+@{
+    ViewBag.Title = Model.Name;
+    var userAccount = new Assignment5.Controllers.RequestUser(User as System.Security.Claims.ClaimsPrincipal);
+}
+
+<h2 style="text-align: center">@ViewBag.Title</h2>
+
+<br />
+
+<table class="table table-borderless table-striped">
+    <tr>
+        <th>@Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.Composers, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.DisplayFor(model => model.Composers)</td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.Genre, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.DisplayFor(model => model.Genre)</td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.Clerk, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.DisplayFor(model => model.Clerk)</td>
+    </tr>
+    <tr>
+        <th>Number of Albums this Track is on</th>
+        <td>@Model.AlbumNames.Count()</td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.AlbumNames, htmlAttributes: new { @class = "control-label" })</th>
+        @foreach (var album in Model.AlbumNames)
+        {
+            <td>@album</td>
+        }
+    </tr>
+    <tr>
+        <th>Track Audio</th>
+        <td><audio src="/audio/@Model.Id" controls="controls"></audio></td>
+    </tr>
+</table>
+
+<p>
+    @if (userAccount.HasRoleClaim("Clerk"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-secondary btn-sm" });
+        @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "btn btn-secondary btn-sm" });
+    }
+
+    @Html.ActionLink("Back to List", "Index")
+</p>

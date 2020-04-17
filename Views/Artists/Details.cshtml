@@ -1,0 +1,106 @@
+﻿@model Assignment5.ViewModels.ArtistWithMediaViewModel
+
+@{
+    ViewBag.Title = Model.Name;
+    var userAccount = new Assignment5.Controllers.RequestUser(User as System.Security.Claims.ClaimsPrincipal);
+}
+
+<h2 style="text-align: center">@ViewBag.Title</h2>
+
+<br />
+
+<table class="table table-borderless table-striped">
+    <tr>
+        <th>@Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.BirthName, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.DisplayFor(model => model.BirthName)</td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.BirthOrStartDate, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.DisplayFor(model => model.BirthOrStartDate)</td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.UrlArtist, htmlAttributes: new { @class = "control-label" })</th>
+        <td><img src="@Model.UrlArtist" alt="@Model.Name" style="width:100%; max-width:150px" /></td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.Executive, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.DisplayFor(model => model.Executive)</td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.Genre, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.DisplayFor(model => model.Genre)</td>
+    </tr>
+    <tr>
+        <th><label class="control-label">Number of Albums</label></th>
+        <td>@Model.Albums.Count()</td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.Portrayal, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.Raw(Model.Portrayal)</td>
+    </tr>
+    @if (Model.MediaItems.Where(m => m.ContentType.Contains("image/")).Count() > 0)
+    {
+
+
+        foreach (var mediaItem in Model.MediaItems.Where(m => m.ContentType.Contains("image/")))
+        {
+            <tr>
+                <th>@mediaItem.Caption</th>
+                <td><img src="~/media/@mediaItem.StringId" alt="@mediaItem.Caption" title="@mediaItem.Caption" class="img-responsive img-rounded" width="200" /></td>
+            </tr>
+        }
+
+    }
+    @if (Model.MediaItems.Where(m => m.ContentType.Contains("audio/")).Count() > 0)
+    {
+
+        foreach (var mediaItem in Model.MediaItems.Where(m => m.ContentType.Contains("audio/")))
+        {
+            <tr>
+                <th>@mediaItem.Caption</th>
+                <td><audio src="~/media/@mediaItem.StringId" controls="controls"></audio></td>
+            </tr>
+        }
+
+    }
+    @if (Model.MediaItems.Where(m => m.ContentType.Contains("video/")).Count() > 0)
+    {
+
+        foreach (var mediaItem in Model.MediaItems.Where(m => m.ContentType.Contains("video/")))
+        {
+            <tr>
+                <th>@mediaItem.Caption</th>
+                <td><video src="~/media/@mediaItem.StringId" controls="controls"></video></td>
+            </tr>
+        }
+
+    }
+    @if (Model.MediaItems.Where(m => m.ContentType.Contains("application/")).Count() > 0)
+    {
+
+        foreach (var mediaItem in Model.MediaItems.Where(m => m.ContentType.Contains("application/")))
+        {
+            <tr>
+                <th>@mediaItem.Caption</th>
+                <td><a href="~/media/@mediaItem.StringId">@mediaItem.Caption</a></td>
+            </tr>
+        }
+
+    }
+</table>
+
+<p>
+    @if (userAccount.HasRoleClaim("Coordinator"))
+    {
+        @Html.ActionLink("Add a new Album", "AddAlbum", "Artists", new { id = Model.Id }, new { @class = "btn btn-secondary btn-sm" });
+    }
+    @if (userAccount.HasRoleClaim("Executive"))
+    {
+        @Html.ActionLink("Add media for this Artist", "AddMedia", "Artists", new { id = Model.Id }, new { @class = "btn btn-secondary btn-sm" });
+    }
+    @Html.ActionLink("Back to List", "Index")
+</p>

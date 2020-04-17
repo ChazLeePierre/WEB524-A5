@@ -1,0 +1,44 @@
+﻿@model Assignment5.ViewModels.AlbumWithDetailViewModel
+
+@{
+    ViewBag.Title = Model.Name;
+    var userAccount = new Assignment5.Controllers.RequestUser(User as System.Security.Claims.ClaimsPrincipal);
+}
+
+<h2 style="text-align: center">@ViewBag.Title</h2>
+
+<br />
+
+<table class="table table-borderless table-striped">
+    <tr>
+        <th>@Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.DisplayFor(model => model.Name)</td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.ReleaseDate, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.DisplayFor(model => model.ReleaseDate)</td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.Coordinator, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.DisplayFor(model => model.Coordinator)</td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.UrlAlbum, htmlAttributes: new { @class = "control-label" })</th>
+        <td><img src="@Model.UrlAlbum" alt="@Model.Name" style="width:100%; max-width:150px" /></td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.Genre, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.DisplayFor(model => model.Genre)</td>
+    </tr>
+    <tr>
+        <th>@Html.LabelFor(model => model.Depiction, htmlAttributes: new { @class = "control-label" })</th>
+        <td>@Html.Raw(Model.Depiction)</td>
+    </tr>
+</table>
+<p>
+    @if (userAccount.HasRoleClaim("Clerk"))
+    {
+        @Html.ActionLink("Add a new Track", "AddTrack", "Albums", new { id = Model.Id }, new { @class = "btn btn-secondary btn-sm" }); 
+    }
+    @Html.ActionLink("Back to List", "Index")
+</p>
