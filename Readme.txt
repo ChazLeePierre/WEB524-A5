@@ -1,8 +1,4 @@
-﻿
-BEFORE running this app for the first time...
+WEB524 Assignment 5 (Final Assignment)
 
-Add your own design model classes,
-in the DesignModelClasses.cs source code file.
-
-Then, add DbSet<TEntity> properties in the 
-IdentityModels.cs source code file.
+This project was created for my final assignment in my Web Programming Using ASP.NET (WEB524) course in college. It is like a simplified Spotify where users can upload & listen to
+music.
